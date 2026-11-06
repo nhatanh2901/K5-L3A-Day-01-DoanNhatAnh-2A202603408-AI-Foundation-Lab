@@ -1,0 +1,191 @@
+{
+ "seed": 7901,
+ "predictions": {
+  "ml_f1": {
+   "text": "F1 đạt khoảng 0.85, precision cao hơn recall, cho thấy mô hình dự đoán spam khá chính xác nhưng vẫn bỏ sót một số tin nhắn spam.",
+   "time": "14:33:22"
+  },
+  "ml_lr": {
+   "text": "Khi lr = 0.001, mô hình cập nhật trọng số rất chậm nên cần nhiều vòng lặp để hội tụ. Khi lr = 50, bước cập nhật trọng số quá lớn, khiến loss có thể dao động mạnh hoặc tăng lên, làm mô hình khó hội tụ. Vì vậy, cần lựa chọn learning rate phù hợp để mô hình học ổn định và hiệu quả.",
+   "time": "14:33:26"
+  },
+  "dl_curve": {
+   "text": "Tôi dự đoán train loss sẽ giảm dần theo số epoch. Validation loss ban đầu có thể giảm nhưng sau đó có thể tăng trở lại nếu mô hình bắt đầu overfitting. MLP có thể đạt kết quả F1 tốt hơn hoặc tương đương Logistic Regression.",
+   "time": "14:33:47"
+  },
+  "dl_relu": {
+   "text": "Nếu bỏ ReLU, hai lớp Linear liên tiếp có thể gộp thành một phép biến đổi tuyến tính. Vì vậy, mô hình mất khả năng học các quan hệ phi tuyến và có bản chất tương đương Logistic Regression. Tôi dự đoán F1 sẽ không cải thiện đáng kể so với MLP có ReLU.",
+   "time": "14:33:58"
+  },
+  "emb_search": {
+   "text": "Embedding giúp biểu diễn tin nhắn thành các vector số học, trong đó những tin nhắn có nội dung hoặc ý nghĩa tương tự thường nằm gần nhau trong không gian vector. Khi sử dụng cosine similarity, hệ thống có thể tìm được những tin nhắn gần nghĩa nhất ngay cả khi chúng không sử dụng hoàn toàn giống nhau về từ ngữ. Tuy nhiên, kết quả vẫn có thể chưa chính xác nếu hai tin nhắn có từ ngữ giống nhau nhưng ý nghĩa khác nhau.",
+   "time": "14:34:48"
+  },
+  "emb_tricky": {
+   "text": "Tôi dự đoán Encoder + Logistic Regression sẽ phân loại tốt hơn Bag-of-Words đối với những tin nhắn ngụy trang. Nguyên nhân là Bag-of-Words chủ yếu dựa vào sự xuất hiện của các từ riêng lẻ, nên có thể nhầm lẫn khi tin nhắn ham chứa những từ thường xuất hiện trong spam hoặc khi tin nhắn spam cố tình tránh các từ khóa phổ biến. Ngược lại, Embedding biểu diễn nội dung theo ngữ nghĩa và mối quan hệ giữa các từ, nhờ đó có khả năng nhận biết ý nghĩa của toàn bộ tin nhắn tốt hơn. Tuy nhiên, kết quả thực tế vẫn cần được kiểm tra qua thí nghiệm.",
+   "time": "14:34:57"
+  },
+  "llm_models": {
+   "text": "I predict that the larger LLM will achieve a higher F1-score because it may understand message context and spam patterns better. However, the improvement may be small on this simple SMS classification task. I expect the larger model to cost more per request, possibly several times as much as the smaller model. I also predict that LLMs may perform better than the embedding-based model on some difficult messages, but they may not necessarily achieve a higher overall F1-score.",
+   "time": "15:00:57"
+  },
+  "llm_fewshot": {
+   "text": "I predict that few-shot prompting will improve the LLM's F1-score compared with zero-shot prompting because the model receives labeled examples of spam and ham messages. These examples help the model understand the classification criteria and distinguish difficult messages. However, the improvement may be small, and the quality of the selected examples can affect the results. Few-shot prompting also increases input tokens, latency, and API cost.",
+   "time": "15:07:59"
+  },
+  "tradeoff": {
+   "text": "\n    I predict that models with higher F1-scores may require more inference time and computational resources.\n    Traditional machine learning models such as Logistic Regression will likely be faster,\n    while deep learning models and LLMs may take longer to make predictions.\n    However, a higher F1-score does not always mean a model is the best choice.\n    We should consider both classification performance and inference speed.\n    For SMS spam classification, I prefer a model that achieves a good F1-score\n    while keeping prediction time low.\n    ",
+   "time": "15:11:25"
+  },
+  "hard_eval": {
+   "text": "\n    I predict that all models will make more mistakes on the hard evaluation set\n    than on the regular test set because these messages are more difficult to classify.\n    Messages with ambiguous wording, indirect spam content, or unusual expressions\n    may confuse the models.\n    Traditional models such as BoW may struggle because they rely heavily on keywords.\n    Embedding-based models and LLMs may understand context better,\n    but they can still make incorrect predictions.\n    I expect the LLM to handle some difficult messages better,\n    although its inference time will be much higher.\n    ",
+   "time": "15:11:25"
+  }
+ },
+ "checks": {
+  "1.1 vectorize": true,
+  "1.2 sigmoid / predict_proba": true,
+  "1.3 train_logreg": true,
+  "1.4 metrics": true,
+  "2.1 build_mlp": true,
+  "2.2 train_mlp": true,
+  "3.1–3.2 cosine / top_k_similar": true,
+  "3.3 knn_predict": true,
+  "4.2–4.3 prompt / parse_label": true,
+  "4.1 + 4.4 call_openai / llm_classify_batch": true,
+  "tính tay: baseline_accuracy": true,
+  "tính tay: sigmoid_0": true,
+  "tính tay: f1_example": true,
+  "tính tay: cosine_example": true,
+  "tính tay: llm_cost_per_day": true
+ },
+ "experiments": [
+  {
+   "key": "ml_f1",
+   "time": "14:33:22"
+  },
+  {
+   "key": "ml_lr",
+   "time": "14:33:26"
+  },
+  {
+   "key": "dl_curve",
+   "time": "14:33:47"
+  },
+  {
+   "key": "dl_relu",
+   "time": "14:33:58"
+  },
+  {
+   "key": "emb_search",
+   "time": "14:34:48"
+  },
+  {
+   "key": "emb_tricky",
+   "time": "14:34:57"
+  },
+  {
+   "key": "llm_models",
+   "time": "15:00:57"
+  },
+  {
+   "key": "llm_fewshot",
+   "time": "15:08:00"
+  },
+  {
+   "key": "tradeoff",
+   "time": "15:11:25"
+  },
+  {
+   "key": "hard_eval",
+   "time": "15:11:25"
+  }
+ ],
+ "challenge": 5,
+ "results": {
+  "1. BoW + LogReg (tự code)": {
+   "accuracy": 0.9729032258064516,
+   "precision": 0.9885057471264368,
+   "recall": 0.8113207547169812,
+   "f1": 0.8911917098445598,
+   "f1_SUB": 0.8235294117647058,
+   "train_s": 3.0561677009999926,
+   "msg_per_s": 45643.668186669376,
+   "p50_ms": 0.051272999996854196,
+   "p95_ms": 0.08819214998538882,
+   "usd_per_1k": 0.0
+  },
+  "2. BoW + MLP (deep learning)": {
+   "accuracy": 0.9819354838709677,
+   "precision": 0.9693877551020408,
+   "recall": 0.8962264150943396,
+   "f1": 0.9313725490196079,
+   "f1_SUB": 0.888888888888889,
+   "train_s": 11.039843081000015,
+   "msg_per_s": 30048.09439830381,
+   "p50_ms": 0.28388650000010784,
+   "p95_ms": 0.40004030003046837,
+   "usd_per_1k": 0.0
+  },
+  "3a. Encoder (MiniLM) + kNN": {
+   "accuracy": 0.9716129032258064,
+   "precision": 0.875,
+   "recall": 0.9245283018867925,
+   "f1": 0.8990825688073395,
+   "f1_SUB": 0.9189189189189189,
+   "train_s": 2.89275257700001,
+   "msg_per_s": 164.58080560265898,
+   "p50_ms": 14.993833999994877,
+   "p95_ms": 18.303652800003036,
+   "usd_per_1k": 0.0
+  },
+  "3b. Encoder (MiniLM) + LogReg": {
+   "accuracy": 0.9819354838709677,
+   "precision": 0.96,
+   "recall": 0.9056603773584906,
+   "f1": 0.9320388349514563,
+   "f1_SUB": 0.9189189189189189,
+   "train_s": 3.393662925000001,
+   "msg_per_s": 1290.8496040470852,
+   "p50_ms": 6.385200000011082,
+   "p95_ms": 7.10791989999393,
+   "usd_per_1k": 0.0
+  },
+  "3c. Encoder (MiniLM) + MLP head": {
+   "accuracy": 0.9819354838709677,
+   "precision": 0.9509803921568627,
+   "recall": 0.9150943396226415,
+   "f1": 0.9326923076923077,
+   "f1_SUB": 0.9189189189189189,
+   "train_s": 3.9331590460000143,
+   "msg_per_s": 1727.3570944325224,
+   "p50_ms": 6.653466500011973,
+   "p95_ms": 7.421029200045837,
+   "usd_per_1k": 0.0
+  },
+  "4a. LLM nhỏ zero-shot": {
+   "accuracy": 0.9,
+   "precision": 0.9444444444444444,
+   "recall": 0.85,
+   "f1": 0.8947368421052632,
+   "f1_SUB": 0.8947368421052632,
+   "train_s": 0.0,
+   "msg_per_s": 0.20173793105797896,
+   "p50_ms": 733.5609750000458,
+   "p95_ms": 1171.2985523500258,
+   "usd_per_1k": 0.010000000000000009
+  },
+  "4c. LLM nhỏ few-shot": {
+   "accuracy": 0.9,
+   "precision": 0.9444444444444444,
+   "recall": 0.85,
+   "f1": 0.8947368421052632,
+   "f1_SUB": 0.8947368421052632,
+   "train_s": 0.0,
+   "msg_per_s": 0.19517279704346285,
+   "p50_ms": 679.2507899999691,
+   "p95_ms": 3001.922546299917,
+   "usd_per_1k": 0.010000000000000009
+  }
+ }
+}
